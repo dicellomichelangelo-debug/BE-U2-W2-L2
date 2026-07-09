@@ -1,11 +1,12 @@
 package michelangelodicello.BE_U2_W2_L2.controllers;
 
 import michelangelodicello.BE_U2_W2_L2.entities.BlogPost;
+import michelangelodicello.BE_U2_W2_L2.payloads.BlogPostPayloadDTO;
 import michelangelodicello.BE_U2_W2_L2.services.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/blogPosts")
@@ -15,8 +16,12 @@ public class BlogPostController {
     private BlogPostService blogPostService;
 
     @GetMapping
-    public List<BlogPost> getAllBlogPosts() {
-        return blogPostService.getAll();
+    public Page<BlogPost> getAllBlogPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        return blogPostService.getAll(page, size, sortBy);
     }
 
     @GetMapping("/{id}")
@@ -25,16 +30,18 @@ public class BlogPostController {
     }
 
     @PostMapping
-    public BlogPost createBlogPost(@RequestBody BlogPost body) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public BlogPost createBlogPost(@RequestBody BlogPostPayloadDTO body) {
         return blogPostService.save(body);
     }
 
     @PutMapping("/{id}")
-    public BlogPost updateBlogPost(@PathVariable Long id, @RequestBody BlogPost body) {
+    public BlogPost updateBlogPost(@PathVariable Long id, @RequestBody BlogPostPayloadDTO body) {
         return blogPostService.findByIdAndUpdate(id, body);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBlogPost(@PathVariable Long id) {
         blogPostService.findByIdAndDelete(id);
     }
