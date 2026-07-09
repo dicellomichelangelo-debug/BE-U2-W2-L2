@@ -3,9 +3,8 @@ package michelangelodicello.BE_U2_W2_L2.controllers;
 import michelangelodicello.BE_U2_W2_L2.entities.Author;
 import michelangelodicello.BE_U2_W2_L2.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/authors")
@@ -15,8 +14,12 @@ public class AuthorController {
     private AuthorService authorService;
 
     @GetMapping
-    public List<Author> getAllAuthors() {
-        return authorService.getAll();
+    public Page<Author> getAllAuthors(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        return authorService.getAll(page, size, sortBy);
     }
 
     @GetMapping("/{id}")
