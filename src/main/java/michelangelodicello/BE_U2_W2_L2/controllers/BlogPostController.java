@@ -1,5 +1,6 @@
 package michelangelodicello.BE_U2_W2_L2.controllers;
 
+import jakarta.validation.Valid;
 import michelangelodicello.BE_U2_W2_L2.entities.BlogPost;
 import michelangelodicello.BE_U2_W2_L2.payloads.BlogPostPayloadDTO;
 import michelangelodicello.BE_U2_W2_L2.services.BlogPostService;
@@ -31,12 +32,12 @@ public class BlogPostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BlogPost createBlogPost(@RequestBody BlogPostPayloadDTO body) {
+    public BlogPost createBlogPost(@RequestBody @Valid BlogPostPayloadDTO body) {
         return blogPostService.save(body);
     }
 
     @PutMapping("/{id}")
-    public BlogPost updateBlogPost(@PathVariable Long id, @RequestBody BlogPostPayloadDTO body) {
+    public BlogPost updateBlogPost(@PathVariable Long id, @RequestBody @Valid BlogPostPayloadDTO body) {
         return blogPostService.findByIdAndUpdate(id, body);
     }
 

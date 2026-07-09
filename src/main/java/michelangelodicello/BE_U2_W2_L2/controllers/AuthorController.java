@@ -1,5 +1,6 @@
 package michelangelodicello.BE_U2_W2_L2.controllers;
 
+import jakarta.validation.Valid;
 import michelangelodicello.BE_U2_W2_L2.entities.Author;
 import michelangelodicello.BE_U2_W2_L2.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,12 @@ public class AuthorController {
     }
 
     @PostMapping
-    public Author createAuthor(@RequestBody Author body) {
+    public Author createAuthor(@RequestBody @Valid Author body) {
         return authorService.save(body);
     }
 
     @PutMapping("/{id}")
-    public Author updateAuthor(@PathVariable Long id, @RequestBody Author body) {
+    public Author updateAuthor(@PathVariable Long id, @RequestBody @Valid Author body) {
         return authorService.findByIdAndUpdate(id, body);
     }
 
